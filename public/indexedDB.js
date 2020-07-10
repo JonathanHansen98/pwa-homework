@@ -2,9 +2,6 @@
 let db;
 const dbRequest = indexedDB.open("budget_db", 1);
 dbRequest.onupgradeneeded = (event) => {
-  console.log("Initializing database");
-  console.log(event.target);
-
   const db = event.target.result;
 
   const store = db.createObjectStore("transactionsStore", {
@@ -14,11 +11,6 @@ dbRequest.onupgradeneeded = (event) => {
   store.createIndex("valueIndex", "value", { unique: false });
 };
 
-dbRequest.onsuccess = (event) => {
-  db = event.target.result;
-  console.log(`Successfully opened connection to db: ${db.name}`);
-};
-
 dbRequest.onerror = (event) => {
   console.log(`error opening db: ${event.target.error}`);
 };
@@ -26,16 +18,10 @@ dbRequest.onerror = (event) => {
 const saveRecord = (transaction) => {
   const tx = db.transaction("transactionsStore", "readwrite"),
     store = tx.objectStore("transactionsStore");
-  console.log(`Post saved offline: ${JSON.stringify(transaction)}`);
-  console.log(navigator.onLine);
-
   store.put(transaction);
 };
 
 const syncDB = () => {
-  console.log("sync");
-  console.log(navigator.onLine);
-
   const tx = db.transaction("transactionsStore", "readwrite"),
     store = tx.objectStore("transactionsStore");
   const transactions = store.getAll();

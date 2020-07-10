@@ -40,20 +40,6 @@ self.addEventListener("activate", function (evt) {
   self.clients.claim();
 });
 
-// The activate handler takes care of cleaning up old caches.
-self.addEventListener("activate", event => {
-    const currentCaches = [PRECACHE, RUNTIME];
-    event.waitUntil(
-      caches.keys().then(cacheNames => {
-        return cacheNames.filter(cacheName => !currentCaches.includes(cacheName));
-      }).then(cachesToDelete => {
-        return Promise.all(cachesToDelete.map(cacheToDelete => {
-          return caches.delete(cacheToDelete);
-        }));
-      }).then(() => self.clients.claim())
-    );
-  });
-
 // fetch
 self.addEventListener("fetch", function (evt) {
   if (evt.request.url.includes("/api/")) {
