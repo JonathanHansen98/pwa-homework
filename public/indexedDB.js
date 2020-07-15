@@ -15,7 +15,12 @@ dbRequest.onerror = (event) => {
   console.log(`error opening db: ${event.target.error}`);
 };
 
+dbRequest.onsuccess = e => {
+  db = e.target.result
+};
+
 const saveRecord = (transaction) => {
+  console.log(db)
   const tx = db.transaction("transactionsStore", "readwrite"),
     store = tx.objectStore("transactionsStore");
   store.put(transaction);
