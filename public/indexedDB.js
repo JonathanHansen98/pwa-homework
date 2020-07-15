@@ -23,7 +23,7 @@ const saveRecord = (transaction) => {
   console.log(db)
   const tx = db.transaction("transactionsStore", "readwrite"),
     store = tx.objectStore("transactionsStore");
-  store.put(transaction);
+  store.add(transaction);
 };
 
 const syncDB = () => {
